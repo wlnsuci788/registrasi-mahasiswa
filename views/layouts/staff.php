@@ -21,19 +21,19 @@ $user = $identity;
 $route = Yii::$app->controller->route;
 $menus = [
     User::ROLE_IO => ['MENU PETUGAS IO', [
-        ['Ringkasan', '/io/index'],
-        ['Verifikasi Pendaftaran', null],
-        ['Bantuan Visa', null],
-        ['Kelola Dokumen Persyaratan', null],
+        ['Ringkasan', '/io/index', ['io/index']],
+        ['Verifikasi Pendaftaran', '/io/verifikasi', ['io/verifikasi', 'io/detail-verifikasi']],
+        ['Bantuan Visa', '/io/bantuan-visa', ['io/bantuan-visa']],
+        ['Kelola Dokumen Persyaratan', '/io/dokumen-persyaratan', ['io/dokumen-persyaratan']],
     ]],
     User::ROLE_FAKULTAS => ['MENU FAKULTAS', [
-        ['Saran Fakultas', '/fakultas/index'],
+        ['Saran Fakultas', '/fakultas/index', ['fakultas/index']],
     ]],
     User::ROLE_PDK => ['MENU UPT PDK', [
-        ['Seleksi Pendaftar WNI', '/pdk/index'],
+        ['Seleksi Pendaftar WNI', '/pdk/index', ['pdk/index']],
     ]],
     User::ROLE_AKADEMIK => ['MENU AKADEMIK', [
-        ['Registration Number', '/akademik/index'],
+        ['Registration Number', '/akademik/index', ['akademik/index']],
     ]],
 ];
 [$menuLabel, $items] = $menus[$user->role] ?? ['MENU', []];
@@ -69,13 +69,9 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
 
         <div class="side-label"><?= Html::encode($menuLabel) ?></div>
         <nav>
-            <?php foreach ($items as [$label, $url]): ?>
-                <?php if ($url): ?>
-                    <a href="<?= Html::encode(Url::to([$url])) ?>"
-                       class="<?= ltrim($url, '/') === $route ? 'on' : '' ?>"><?= Html::encode($label) ?></a>
-                <?php else: ?>
-                    <a href="#" class="dis" title="Halaman menyusul"><?= Html::encode($label) ?></a>
-                <?php endif; ?>
+            <?php foreach ($items as [$label, $url, $activeRoutes]): ?>
+                <a href="<?= Html::encode(Url::to([$url])) ?>"
+                   class="<?= in_array($route, $activeRoutes, true) ? 'on' : '' ?>"><?= Html::encode($label) ?></a>
             <?php endforeach; ?>
         </nav>
 

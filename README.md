@@ -32,11 +32,11 @@ Sistem melibatkan lima aktor utama:
 
 ### 🌐 International Office
 - Login sebagai pengguna internal.
-- Mengelola dokumen persyaratan.
-- Memverifikasi pendaftaran mahasiswa asing.
-- Memberikan keputusan lolos atau tidak lolos beserta catatan.
-- Memproses bantuan pengurusan visa.
-- Memperbarui status dan catatan pengurusan visa.
+- Melihat dashboard demo dengan ringkasan pendaftar WNA, antrean verifikasi, bantuan visa aktif, dan dokumen persyaratan.
+- Meninjau data pendaftaran dan berkas mahasiswa asing, lalu menetapkan keputusan beserta catatan.
+- Memproses bantuan pengurusan visa serta memperbarui status dan catatan layanan.
+- Menambah, mengubah, mengaktifkan, menonaktifkan, dan mengarsipkan contoh dokumen persyaratan Degree dan Non-degree.
+- Perubahan pada halaman International Office saat ini hanya disimpan sementara di sesi browser dan tidak mengubah database.
 
 ### 🏢 UPT Pendidikan Luar Kampus (PDK)
 - Login sebagai pengguna internal.

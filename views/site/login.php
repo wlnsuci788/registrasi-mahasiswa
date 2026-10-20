@@ -76,10 +76,6 @@ JS);
 
     <?php ActiveForm::end(); ?>
 
-    <div class="staff-login">
-        <a href="#login-form">Masuk sebagai petugas</a>
-    </div>
-
     <div class="auth-links">
         Belum punya akun?
         <a href="<?= Url::to(['site/register']) ?>"><b>Registrasi Sekarang &rarr;</b></a>
