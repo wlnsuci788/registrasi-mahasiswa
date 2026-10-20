@@ -31,6 +31,9 @@ class CalonController extends RoleController
         return $this->render('index', [
             'pendaftaran' => $pendaftaran,
             'completedSteps' => $this->getCompletedSteps($pendaftaran),
+            'requirements' => $pendaftaran ? $this->getApplicableDocuments($pendaftaran) : [],
+            'documents' => $pendaftaran ? $this->getUploadedDocuments($pendaftaran) : [],
+            'visa' => $pendaftaran ? $this->findVisaRequest($pendaftaran) : null,
         ]);
     }
 
@@ -86,6 +89,12 @@ class CalonController extends RoleController
             'fakultas_id',
             ])
         ) {
+            if ($pendaftaran->kategori_program === Pendaftaran::KATEGORI_PROGRAM_NON_DEGREE) {
+                $pendaftaran->jenjang = null;
+                $pendaftaran->fakultas_id = null;
+            } elseif ($pendaftaran->kategori_program === Pendaftaran::KATEGORI_PROGRAM_DEGREE) {
+                $pendaftaran->jenis_program = null;
+            }
             $pendaftaran->user_id = (int) Yii::$app->user->id;
             $pendaftaran->status = Pendaftaran::STATUS_DRAFT;
             $pendaftaran->updated_by = (int) Yii::$app->user->id;
@@ -124,6 +133,21 @@ class CalonController extends RoleController
             $this->request->isPost && $this->loadPendaftaranAttributes($pendaftaran, [
             'asal_institusi',
             'nilai_akhir',
+            'negara_institusi',
+            'kota_institusi',
+            'jenjang_pendidikan_terakhir',
+            'jurusan_asal',
+            'skala_nilai',
+            'tahun_kelulusan',
+            'jenis_tes_bahasa_inggris',
+            'skor_tes_bahasa_inggris',
+            'tanggal_tes_bahasa_inggris',
+            'nomor_sertifikat_bahasa_inggris',
+            'tingkat_bahasa_indonesia',
+            'rencana_kursus_bahasa_indonesia',
+            'transfer_kredit',
+            'status_mahasiswa_asal',
+            'target_kredit',
             'pembiayaan',
             'lama_kunjungan',
             ])
@@ -131,11 +155,17 @@ class CalonController extends RoleController
             $pendaftaran->user_id = (int) Yii::$app->user->id;
             $pendaftaran->status = Pendaftaran::STATUS_DRAFT;
             $pendaftaran->updated_by = (int) Yii::$app->user->id;
+            $saveAsDraft = $this->request->post('intent') === 'draft';
 
-            if ($this->validateAcademics($pendaftaran) && $pendaftaran->save()) {
-                Yii::$app->session->setFlash('success', 'Riwayat akademik berhasil disimpan.');
+            if ($this->validateAcademics($pendaftaran, $saveAsDraft) && $pendaftaran->save()) {
+                Yii::$app->session->setFlash(
+                    'success',
+                    $saveAsDraft
+                        ? 'Draft riwayat akademik berhasil disimpan.'
+                        : 'Riwayat akademik berhasil disimpan.',
+                );
 
-                return $this->redirect(['dokumen']);
+                return $this->redirect($saveAsDraft ? ['akademik'] : ['dokumen']);
             }
         }
 
@@ -254,6 +284,47 @@ class CalonController extends RoleController
             throw new NotFoundHttpException('Dokumen tidak ditemukan.');
         }
 
+        $filePath = $this->getUploadedFilePath($document);
+
+        return Yii::$app->response->sendFile($filePath, $document->nama_file ?: 'dokumen');
+    }
+
+    public function actionFotoDokumen(int $id): Response
+    {
+        $document = DokumenPendaftar::find()
+            ->alias('dp')
+            ->innerJoinWith('pendaftaran p')
+            ->with('dokumen')
+            ->where([
+                'dp.dokumen_pendaftar_id' => $id,
+                'dp.deleted_at' => null,
+                'p.user_id' => Yii::$app->user->id,
+                'p.deleted_at' => null,
+            ])
+            ->one();
+        if (
+            !$document
+            || !$document->dokumen
+            || stripos($document->dokumen->nama_dokumen, 'foto') === false
+        ) {
+            throw new NotFoundHttpException('Foto pendaftar tidak ditemukan.');
+        }
+
+        $filePath = $this->getUploadedFilePath($document);
+        $mimeType = (new \finfo(FILEINFO_MIME_TYPE))->file($filePath);
+        if (!in_array($mimeType, ['image/jpeg', 'image/png'], true)) {
+            throw new NotFoundHttpException('Berkas foto tidak tersedia.');
+        }
+
+        return Yii::$app->response->sendFile(
+            $filePath,
+            $document->nama_file ?: 'pas-foto',
+            ['mimeType' => $mimeType, 'inline' => true],
+        );
+    }
+
+    private function getUploadedFilePath(DokumenPendaftar $document): string
+    {
         $uploadRoot = realpath(Yii::getAlias('@runtime/uploads'));
         $filePath = $document->file_path ? realpath($document->file_path) : false;
         if (
@@ -268,7 +339,7 @@ class CalonController extends RoleController
             throw new NotFoundHttpException('Berkas tidak tersedia.');
         }
 
-        return Yii::$app->response->sendFile($filePath, $document->nama_file ?: 'dokumen');
+        return $filePath;
     }
 
     public function actionVisa(): Response|string
@@ -466,6 +537,7 @@ class CalonController extends RoleController
         return $this->render('ringkasan', [
             'pendaftaran' => $pendaftaran,
             'fakultas' => $pendaftaran->fakultas,
+            'requirements' => $this->getApplicableDocuments($pendaftaran),
             'documents' => $this->getUploadedDocuments($pendaftaran),
             'visa' => $this->findVisaRequest($pendaftaran),
             'submissionErrors' => $this->getSubmissionErrors($pendaftaran),
@@ -476,7 +548,15 @@ class CalonController extends RoleController
 
     public function actionStatus(): string
     {
-        return $this->render('status', ['pendaftaran' => $this->findLatestPendaftaran()]);
+        $pendaftaran = $this->findLatestPendaftaran();
+
+        return $this->render('status', [
+            'pendaftaran' => $pendaftaran,
+            'completedSteps' => $this->getCompletedSteps($pendaftaran),
+            'requirements' => $pendaftaran ? $this->getApplicableDocuments($pendaftaran) : [],
+            'documents' => $pendaftaran ? $this->getUploadedDocuments($pendaftaran) : [],
+            'visa' => $pendaftaran ? $this->findVisaRequest($pendaftaran) : null,
+        ]);
     }
 
     public function actionBantuan(): string
@@ -598,30 +678,107 @@ class CalonController extends RoleController
         return $identityValid && $programValid;
     }
 
-    private function validateAcademics(Pendaftaran $pendaftaran): bool
+    private function validateAcademics(Pendaftaran $pendaftaran, bool $allowIncomplete = false): bool
     {
-        $valid = $pendaftaran->validate(['asal_institusi', 'nilai_akhir', 'pembiayaan', 'lama_kunjungan']);
-        if (trim((string) $pendaftaran->asal_institusi) === '') {
-            $pendaftaran->addError('asal_institusi', 'Nama institusi asal wajib diisi.');
-            $valid = false;
+        $academicAttributes = [
+            'asal_institusi',
+            'negara_institusi',
+            'kota_institusi',
+            'jenjang_pendidikan_terakhir',
+            'jurusan_asal',
+            'skala_nilai',
+            'tahun_kelulusan',
+            'nilai_akhir',
+            'jenis_tes_bahasa_inggris',
+            'skor_tes_bahasa_inggris',
+            'tanggal_tes_bahasa_inggris',
+            'nomor_sertifikat_bahasa_inggris',
+            'tingkat_bahasa_indonesia',
+            'rencana_kursus_bahasa_indonesia',
+            'transfer_kredit',
+            'status_mahasiswa_asal',
+            'target_kredit',
+            'pembiayaan',
+            'lama_kunjungan',
+        ];
+        $valid = $pendaftaran->validate($academicAttributes);
+        $requiredAttributes = [
+            'asal_institusi' => 'Nama institusi asal wajib diisi.',
+            'negara_institusi' => 'Negara institusi asal wajib diisi.',
+            'kota_institusi' => 'Kota / lokasi institusi asal wajib diisi.',
+            'jenjang_pendidikan_terakhir' => 'Pilih jenjang pendidikan terakhir.',
+            'jurusan_asal' => 'Jurusan / konsentrasi wajib diisi.',
+            'skala_nilai' => 'Pilih skala nilai.',
+            'tahun_kelulusan' => 'Tahun kelulusan wajib diisi.',
+            'pembiayaan' => 'Pilih sumber pembiayaan.',
+        ];
+        if (!$allowIncomplete) {
+            foreach ($requiredAttributes as $attribute => $message) {
+                if (trim((string) $pendaftaran->$attribute) === '') {
+                    $pendaftaran->addError($attribute, $message);
+                    $valid = false;
+                }
+            }
         }
         if ($pendaftaran->nilai_akhir === null) {
-            $pendaftaran->addError('nilai_akhir', 'Nilai akhir / IPK wajib diisi.');
-            $valid = false;
-        } elseif ($pendaftaran->nilai_akhir < 0 || $pendaftaran->nilai_akhir > 100) {
-            $pendaftaran->addError('nilai_akhir', 'Nilai akhir harus berada pada rentang 0 sampai 100.');
+            if (!$allowIncomplete) {
+                $pendaftaran->addError('nilai_akhir', 'Nilai akhir / IPK wajib diisi.');
+                $valid = false;
+            }
+        } elseif (
+            $pendaftaran->nilai_akhir < 0
+            || ($pendaftaran->skala_nilai && $pendaftaran->nilai_akhir > (float) $pendaftaran->skala_nilai)
+            || (!$pendaftaran->skala_nilai && $pendaftaran->nilai_akhir > 100)
+        ) {
+            $pendaftaran->addError('nilai_akhir', 'Nilai harus berada dalam rentang skala nilai yang dipilih.');
             $valid = false;
         }
-        if (!$pendaftaran->pembiayaan) {
-            $pendaftaran->addError('pembiayaan', 'Pilih sumber pembiayaan.');
-            $valid = false;
+
+        $englishTestDetails = [
+            'skor_tes_bahasa_inggris' => 'Skor tes bahasa Inggris wajib diisi.',
+            'tanggal_tes_bahasa_inggris' => 'Tanggal tes bahasa Inggris wajib diisi.',
+            'nomor_sertifikat_bahasa_inggris' => 'Nomor sertifikat / TRF wajib diisi.',
+        ];
+        if (!$allowIncomplete && $pendaftaran->jenis_tes_bahasa_inggris) {
+            foreach ($englishTestDetails as $attribute => $message) {
+                if (trim((string) $pendaftaran->$attribute) === '') {
+                    $pendaftaran->addError($attribute, $message);
+                    $valid = false;
+                }
+            }
+            if ($pendaftaran->tanggal_tes_bahasa_inggris > date('Y-m-d')) {
+                $pendaftaran->addError('tanggal_tes_bahasa_inggris', 'Tanggal tes tidak boleh berada di masa depan.');
+                $valid = false;
+            }
+            $maximumScore = match ($pendaftaran->jenis_tes_bahasa_inggris) {
+                'IELTS Academic' => 9,
+                'TOEFL iBT Official' => 120,
+                'Duolingo Test (DET)' => 160,
+                default => null,
+            };
+            if ($maximumScore !== null && $pendaftaran->skor_tes_bahasa_inggris > $maximumScore) {
+                $pendaftaran->addError('skor_tes_bahasa_inggris', 'Skor melampaui batas maksimum tes yang dipilih.');
+                $valid = false;
+            }
         }
+
         if (
-            $pendaftaran->kategori_program === Pendaftaran::KATEGORI_PROGRAM_NON_DEGREE
+            !$allowIncomplete
+            && $pendaftaran->kategori_program === Pendaftaran::KATEGORI_PROGRAM_NON_DEGREE
             && !$pendaftaran->lama_kunjungan
         ) {
             $pendaftaran->addError('lama_kunjungan', 'Lama kunjungan wajib diisi untuk program non-degree.');
             $valid = false;
+        }
+        if (!$allowIncomplete && $pendaftaran->transfer_kredit) {
+            if (!$pendaftaran->status_mahasiswa_asal) {
+                $pendaftaran->addError('status_mahasiswa_asal', 'Pilih status mahasiswa di kampus asal.');
+                $valid = false;
+            }
+            if (!$pendaftaran->target_kredit || $pendaftaran->target_kredit <= 0) {
+                $pendaftaran->addError('target_kredit', 'Target beban SKS / ECTS wajib diisi lebih dari 0.');
+                $valid = false;
+            }
         }
 
         return $valid;

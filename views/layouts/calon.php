@@ -21,10 +21,10 @@ if (!$identity instanceof User) {
 $user = $identity;
 $route = Yii::$app->controller->route;
 $menu = [
-    ['Beranda', '/calon/index'],
-    ['Formulir Registrasi', '/calon/form'],
-    ['Status Pendaftaran', '/calon/status'],
-    ['Bantuan / Panduan', '/calon/bantuan'],
+    ['Beranda', '/calon/index', '⌂'],
+    ['Formulir Registrasi', '/calon/form', '▤'],
+    ['Status Pendaftaran', '/calon/status', '✓'],
+    ['Bantuan / Panduan', '/calon/bantuan', '?'],
 ];
 ?>
 <?php $this->beginPage() ?>
@@ -51,7 +51,7 @@ $menu = [
     </div>
 
     <nav class="cal-menu">
-        <?php foreach ($menu as [$label, $url]): ?>
+        <?php foreach ($menu as [$label, $url, $icon]): ?>
             <?php
             $isActive = match ($label) {
                 'Beranda' => $route === 'calon/index',
@@ -59,9 +59,13 @@ $menu = [
                 'Status Pendaftaran' => $route === 'calon/status',
                 default => ltrim($url, '/') === $route,
             };
-            ?>
+    ?>
             <a href="<?= Html::encode(Url::to([$url])) ?>"
-               class="<?= $isActive ? 'on' : '' ?>"><?= Html::encode($label) ?></a>
+               class="<?= $isActive ? 'on' : '' ?>"
+               <?= $isActive ? 'aria-current="page"' : '' ?>>
+                <span class="cal-menu-icon" aria-hidden="true"><?= Html::encode($icon) ?></span>
+                <span><?= Html::encode($label) ?></span>
+            </a>
         <?php endforeach; ?>
     </nav>
 

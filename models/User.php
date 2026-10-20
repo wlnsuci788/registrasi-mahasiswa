@@ -117,7 +117,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             ->andWhere(['deleted_at' => null])
             ->one();
     }
-
+    
+    
     public function validatePassword($password)
     {
         return Yii::$app->security->validatePassword($password, $this->password);

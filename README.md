@@ -1,234 +1,201 @@
-<p align="center">
-    <picture>
-        <source media="(prefers-color-scheme: dark)" srcset="https://www.yiiframework.com/image/design/logo/yii3_full_for_dark.svg">
-        <source media="(prefers-color-scheme: light)" srcset="https://www.yiiframework.com/image/design/logo/yii3_full_for_light.svg">
-        <img src="https://www.yiiframework.com/image/design/logo/yii3_full_for_light.svg" alt="Yii Framework" height="100">
-    </picture>
-    <h1 align="center">Yii 2 Basic Project Template</h1>
-    <br>
-</p>
+# Portal Registrasi Mahasiswa Asing – Universitas Andalas
+
+> Aplikasi berbasis web untuk mengelola proses registrasi calon mahasiswa asing dan WNI, mulai dari registrasi akun, pengisian formulir, pengunggahan dokumen, verifikasi atau seleksi, hingga penerbitan registration number.
+
+## 📋 Tentang Proyek
+
+Portal Registrasi Mahasiswa Asing – Universitas Andalas merupakan aplikasi berbasis web yang dirancang untuk membantu proses pendaftaran calon mahasiswa secara terstruktur.
+
+Sistem mendukung pendaftaran mahasiswa Warga Negara Asing (WNA) dan Warga Negara Indonesia (WNI), termasuk pengisian data diri, pemilihan program, pengunggahan dokumen persyaratan, serta pemantauan status pendaftaran.
+
+Sistem melibatkan lima aktor utama:
+
+- **Calon Mahasiswa** — membuat akun, mengisi pendaftaran, mengunggah dokumen, dan memantau status.
+- **International Office** — mengelola dokumen persyaratan, memverifikasi pendaftaran mahasiswa asing, dan memproses bantuan visa.
+- **UPT Pendidikan Luar Kampus (PDK)** — menyeleksi pendaftar WNI.
+- **Fakultas** — memeriksa pendaftar mahasiswa asing sesuai fakultas terkait dan memberikan usulan keputusan.
+- **Akademik** — menerbitkan registration number bagi pendaftar yang telah lolos.
+
+## ✨ Fitur Utama
+
+### 👤 Calon Mahasiswa
+- Registrasi akun dan login.
+- Mengisi formulir pendaftaran secara bertahap.
+- Mengisi data diri dan memilih program pendaftaran.
+- Memilih program degree atau non-degree sesuai ketentuan.
+- Memilih fakultas tujuan.
+- Mengisi data akademik atau lama kunjungan sesuai program.
+- Mengunggah dokumen pendukung.
+- Memilih pengurusan visa secara mandiri atau dengan bantuan.
+- Mengirim pendaftaran setelah seluruh tahapan lengkap.
+- Memantau status pendaftaran dan bantuan visa.
+
+### 🌐 International Office
+- Login sebagai pengguna internal.
+- Mengelola dokumen persyaratan.
+- Memverifikasi pendaftaran mahasiswa asing.
+- Memberikan keputusan lolos atau tidak lolos beserta catatan.
+- Memproses bantuan pengurusan visa.
+- Memperbarui status dan catatan pengurusan visa.
+
+### 🏢 UPT Pendidikan Luar Kampus (PDK)
+- Login sebagai pengguna internal.
+- Melihat daftar pendaftar WNI.
+- Memeriksa data dan dokumen pendaftar.
+- Menetapkan keputusan seleksi beserta catatan.
+- Meneruskan pendaftar yang lolos ke Akademik.
+
+### 🏫 Fakultas
+- Login sebagai pengguna internal.
+- Melihat pendaftar mahasiswa asing sesuai fakultas terkait.
+- Memeriksa data dan dokumen pendaftar.
+- Memberikan usulan keputusan beserta catatan.
+
+### 🎓 Akademik
+- Login sebagai pengguna internal.
+- Melihat daftar pendaftar yang telah lolos.
+- Memeriksa kelengkapan data pendaftar.
+- Menerbitkan registration number yang unik.
+- Memperbarui status pendaftaran setelah nomor diterbitkan.
+
+## 🗂️ Aktor Sistem
+
+| Aktor | Akses | Deskripsi |
+|---|---|---|
+| Calon Mahasiswa | Registrasi akun dan login | Mengisi pendaftaran dan memantau status miliknya. |
+| International Office | Login wajib | Mengelola persyaratan, verifikasi pendaftar asing, dan bantuan visa. |
+| UPT Pendidikan Luar Kampus (PDK) | Login wajib | Menyeleksi pendaftar WNI. |
+| Fakultas | Login wajib | Memeriksa pendaftar asing dan memberikan usulan keputusan. |
+| Akademik | Login wajib | Menerbitkan registration number bagi pendaftar yang lolos. |
+
+## 🔄 Alur Registrasi
+
+1. Calon mahasiswa membuat akun dan login.
+2. Calon mahasiswa mengisi data diri dan memilih program.
+3. Sistem menampilkan isian lanjutan sesuai jalur dan program.
+4. Calon mahasiswa mengisi data akademik atau lama kunjungan.
+5. Calon mahasiswa mengunggah dokumen pendukung.
+6. Calon mahasiswa memilih opsi pengurusan visa.
+7. Calon mahasiswa memeriksa ringkasan dan mengirim pendaftaran.
+8. Pendaftaran WNA diteruskan ke International Office, sedangkan pendaftaran WNI diteruskan ke UPT Pendidikan Luar Kampus.
+9. Pendaftaran diperiksa dan diputuskan sesuai kewenangan masing-masing aktor.
+10. Pendaftar yang lolos diteruskan ke Akademik.
+11. Akademik menerbitkan registration number.
+12. Calon mahasiswa memantau status pendaftaran melalui sistem.
+
+## 📌 Status Pendaftaran
+
+| Status | Keterangan |
+|---|---|
+| Draft | Pendaftaran masih dalam tahap pengisian. |
+| Terkirim | Pendaftaran sudah dikirim untuk diproses. |
+| Lolos | Pendaftar dinyatakan lolos. |
+| Tidak lolos | Pendaftar dinyatakan tidak lolos. |
+| Registration number terbit | Nomor registrasi telah diterbitkan oleh Akademik. |
+
+### Status Pengurusan Visa
+
+| Status | Keterangan |
+|---|---|
+| Menunggu diproses | Pengajuan menunggu penanganan. |
+| Diproses | Pengajuan sedang ditangani. |
+| Perlu data tambahan | Pendaftar perlu melengkapi data atau dokumen. |
+| Selesai | Proses bantuan visa telah selesai. |
 
-Yii 2 Basic Project Template is a skeleton [Yii 2](https://www.yiiframework.com/) application best for
-rapidly creating small projects.
+## 🧱 Struktur Basis Data (ERD)
 
-The template contains the basic features including user login/logout and a contact page.
-It includes all commonly used configurations that would allow you to focus on adding new
-features to your application.
+Struktur basis data mengikuti ERD dalam dokumen perancangan proyek.
 
-[![Latest Stable Version](https://img.shields.io/packagist/v/yiisoft/yii2-app-basic.svg?style=for-the-badge&label=Stable&logo=packagist)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![Total Downloads](https://img.shields.io/packagist/dt/yiisoft/yii2-app-basic.svg?style=for-the-badge&label=Downloads)](https://packagist.org/packages/yiisoft/yii2-app-basic)
-[![build](https://img.shields.io/github/actions/workflow/status/yiisoft/yii2-app-basic/build.yml?style=for-the-badge&logo=github&label=Build)](https://github.com/yiisoft/yii2-app-basic/actions?query=workflow%3Abuild)
-[![codecov](https://img.shields.io/codecov/c/github/yiisoft/yii2-app-basic.svg?style=for-the-badge&logo=codecov&logoColor=white&label=Codecov)](https://codecov.io/gh/yiisoft/yii2-app-basic)
-[![Static Analysis](https://img.shields.io/github/actions/workflow/status/yiisoft/yii2-app-basic/static.yml?style=for-the-badge&label=Static)](https://github.com/yiisoft/yii2-app-basic/actions/workflows/static.yml)
+Entitas utama yang disebutkan dalam perancangan meliputi:
 
-<picture>
-    <source media="(prefers-color-scheme: dark)" srcset="docs/images/home-dark.png">
-    <source media="(prefers-color-scheme: light)" srcset="docs/images/home-light.png">
-    <img src="docs/images/home-light.png" alt="Web Application Basic">
-</picture>
+- `USERS` — data akun dan peran pengguna.
+- `PENDAFTARAN` — data utama pendaftaran dan statusnya.
+- `PENGAJUAN_VISA` — data pengajuan bantuan visa.
+- `DOKUMEN_PERSYARATAN` — data persyaratan dokumen untuk program pendaftaran.
 
-## Docker
+### Kategori Program
 
-[![Apache](https://img.shields.io/github/actions/workflow/status/yiisoft/yii2-app-basic/docker.yml?style=for-the-badge&logo=apache&label=Apache)](https://github.com/yiisoft/yii2-app-basic/actions/workflows/docker.yml)
+- **Jalur:** asing dan WNI.
+- **Kategori program:** degree dan non-degree.
+- **Jenjang degree:** S1, S2, dan S3.
+- **Jenis program non-degree:** summer course, short course, student exchange, dan credit earning.
+- **Pilihan visa:** urus sendiri dan dibantu.
+- **Tujuan proses:** International Office (IO) dan UPT Pendidikan Luar Kampus (PDK).
 
-DIRECTORY STRUCTURE
--------------------
+## 📐 Dokumentasi Perancangan
 
-      assets/             contains assets definition
-      commands/           contains console commands (controllers)
-      config/             contains application configurations
-      controllers/        contains Web controller classes
-      mail/               contains view files for e-mails
-      models/             contains model classes
-      runtime/            contains files generated during runtime
-      tests/              contains various tests for the basic application
-      vendor/             contains dependent 3rd-party packages
-      views/              contains view files for the Web application
-      web/                contains the entry script and Web resources
+Dokumentasi perancangan sistem meliputi:
 
-REQUIREMENTS
-------------
+- Use Case Diagram dan Deskripsi Aktor.
+- Deskripsi Use Case.
+- Scenario Diagram untuk 11 use case.
+- Activity Diagram untuk 11 use case.
+- Sequence Diagram untuk 11 use case.
+- Entity Relationship Diagram (ERD).
+- Keterangan nilai kolom atau enum pada ERD.
+- Desain website.
 
-The minimum requirement by this project template that your Web server supports PHP 8.2.
+### Daftar Use Case
 
-INSTALLATION
-------------
+1. Login.
+2. Registrasi Akun.
+3. Mengisi Registrasi Pendaftaran.
+4. Mengajukan Bantuan Visa.
+5. Mengunggah Dokumen Pendukung.
+6. Memantau Status Pendaftaran.
+7. Mengelola Dokumen Persyaratan.
+8. Memverifikasi Pendaftaran.
+9. Memproses Bantuan Visa.
+10. Menyeleksi Pendaftar WNI.
+11. Menerbitkan Registration Number.
 
-> [!IMPORTANT]
-> - The minimum required [PHP](https://www.php.net/) version of Yii is PHP `8.2`.
+## 🛠️ Teknologi
 
-## Install via Composer
+- **Backend:** PHP dengan framework Yii2.
+- **Frontend:** HTML, CSS, JavaScript, dan template tampilan aplikasi.
+- **Database:** Mengikuti konfigurasi proyek.
+- **Version Control:** Git dan GitHub.
 
-If you do not have [Composer](https://getcomposer.org/), you may install it by following the instructions
-at [getcomposer.org](https://getcomposer.org/doc/00-intro.md#installation-nix).
+## 🚀 Instalasi
 
-You can then install this project template using the following command:
+### Persyaratan Sistem
 
-~~~
-composer create-project --prefer-dist yiisoft/yii2-app-basic basic
-~~~
+- PHP dengan versi yang sesuai.
+- Composer.
+- Database sesuai konfigurasi aplikasi.
+- Web server atau lingkungan pengembangan lokal.
 
-Now you should be able to access the application through the following URL, assuming `basic` is the directory
-directly under the Web root.
+### Langkah Instalasi
 
-~~~
-http://localhost/basic/web/
-~~~
+1. Clone repository:
 
-## Install from an Archive File
+   ```bash
+   git clone https://github.com/wlnsuci788/registrasi-mahasiswa.git
+   ```
 
-Extract the archive file downloaded from [yiiframework.com](https://www.yiiframework.com/download/) to
-a directory named `basic` that is directly under the Web root.
+2. Masuk ke folder proyek:
 
-Set cookie validation key in `config/web.php` file to some random secret string:
+   ```bash
+   cd registrasi-mahasiswa
+   ```
 
-```php
-'request' => [
-    // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
-    'cookieValidationKey' => '<secret random string goes here>',
-],
-```
+3. Instal dependensi:
 
-You can then access the application through the following URL:
+   ```bash
+   composer install
+   ```
 
-~~~
-http://localhost/basic/web/
-~~~
+4. Sesuaikan konfigurasi database dan aplikasi dengan lingkungan lokal.
+5. Jalankan aplikasi sesuai struktur dan konfigurasi Yii2 yang digunakan.
 
-## Install with Docker
+## 📁 Repository
 
-Update your vendor packages
+[GitHub – registrasi-mahasiswa](https://github.com/wlnsuci788/registrasi-mahasiswa)
 
-    docker-compose run --rm php composer update --prefer-dist
-    
-Run the installation triggers (creating cookie validation code)
+## 👤 Pengembang
 
-    docker-compose run --rm php composer install    
-    
-Start the container
+Dwi Wulan Suci | 2311081012 | Teknologi Rekayasa Perangkat Lunak | Politeknik Negeri Padang
 
-    docker-compose up -d
-    
-You can then access the application through the following URL:
+## 📌 Status Proyek
 
-    http://127.0.0.1:8000
-
-Run tests inside the container
-
-    docker compose exec -T php vendor/bin/codecept build
-    docker compose exec -T php vendor/bin/codecept run
-
-**NOTES:** 
-- Minimum required Docker engine version `17.04` for development (see [Performance tuning for volume mounts](https://docs.docker.com/docker-for-mac/osxfs-caching/))
-- The default configuration uses a host-volume in your home directory `~/.composer-docker/cache` for Composer caches
-
-
-CONFIGURATION
--------------
-
-## Database
-
-Edit the file `config/db.php` with real data, for example:
-
-```php
-return [
-    'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=yii2basic',
-    'username' => 'root',
-    'password' => '1234',
-    'charset' => 'utf8',
-];
-```
-
-**NOTES:**
-- Yii won't create the database for you, this has to be done manually before you can access it.
-- Check and edit the other files in the `config/` directory to customize your application as required.
-- Refer to the README in the `tests` directory for information specific to basic application tests.
-
-TESTING
--------
-
-Tests are located in `tests` directory. They are developed with [Codeception PHP Testing Framework](https://codeception.com/).
-By default, there are 3 test suites:
-
-- `unit`
-- `functional`
-- `acceptance`
-
-Tests can be executed by running
-
-```
-vendor/bin/codecept run --env php-builtin
-```
-
-The command above will execute unit and functional tests. Unit tests are testing the system components, while functional
-tests are for testing user interaction.
-
-
-## Acceptance tests
-
-The `acceptance` suite is configured in `tests/Acceptance.suite.yml`.
-
-### Acceptance tests (PhpBrowser)
-
-By default, acceptance tests use the `PhpBrowser` module and run against the built-in PHP web server started via the
-`php-builtin` environment.
-
-```
-# run all tests with built-in web server
-composer tests
-
-# run acceptance tests only
-vendor/bin/codecept run Acceptance --env php-builtin
-```
-
-### Acceptance tests (WebDriver + Selenium)
-
-To run acceptance tests in a real browser, switch the `acceptance` suite to use the `WebDriver` module.
-`tests/Acceptance.suite.yml` contains an example WebDriver configuration (commented).
-
-1. Download and start [Selenium Server](https://www.selenium.dev/downloads/).
-2. Install the corresponding browser driver (for example. [GeckoDriver](https://github.com/mozilla/geckodriver/releases) or
-   [ChromeDriver](https://googlechromelabs.github.io/chrome-for-testing/)).
-3. Update `tests/Acceptance.suite.yml` to enable `WebDriver` and disable `PhpBrowser`.
-4. Run:
-
-```
-vendor/bin/codecept run Acceptance --env php-builtin
-```
-
-## Code coverage support
-
-Code coverage is configured in `codeception.yml`. You can run your tests and collect coverage with the following command:
-
-```
-#collect coverage for all tests
-vendor/bin/codecept run --coverage --coverage-html --coverage-xml --env php-builtin
-
-#collect coverage only for unit tests
-vendor/bin/codecept run Unit --coverage --coverage-html --coverage-xml --env php-builtin
-
-#collect coverage for unit and functional tests
-vendor/bin/codecept run Functional,Unit --coverage --coverage-html --coverage-xml --env php-builtin
-```
-
-You can see code coverage output under the `tests/Support/output` directory.
-
-## Documentation
-
-- [Internals](docs/internals.md)
-
-## Support the project
-
-[![Open Collective](https://img.shields.io/badge/Open%20Collective-sponsor-7eadf1?style=for-the-badge&logo=open%20collective&logoColor=7eadf1&labelColor=555555)](https://opencollective.com/yiisoft)
-
-## Follow updates
-
-[![Official website](https://img.shields.io/badge/Powered_by-Yii_Framework-green.svg?style=for-the-badge&logo=yii)](https://www.yiiframework.com/)
-[![Follow on X](https://img.shields.io/badge/-Follow%20on%20X-1DA1F2.svg?style=for-the-badge&logo=x&logoColor=white&labelColor=000000)](https://x.com/yiiframework)
-[![Telegram](https://img.shields.io/badge/telegram-join-1DA1F2?style=for-the-badge&logo=telegram)](https://t.me/yii_framework_in_english)
-[![Slack](https://img.shields.io/badge/slack-join-1DA1F2?style=for-the-badge&logo=slack)](https://yiiframework.com/go/slack)
-
-## License
-
-[![License](https://img.shields.io/badge/License-BSD--3--Clause-brightgreen.svg?style=for-the-badge&logo=opensourceinitiative&logoColor=white&labelColor=555555)](LICENSE.md)
+Dalam tahap pengembangan berdasarkan perancangan Portal Registrasi Mahasiswa Asing – Universitas Andalas.

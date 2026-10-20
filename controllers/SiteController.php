@@ -90,7 +90,7 @@ class SiteController extends Controller
             return $this->redirect(User::homeRoute($identity->role));
         }
 
-        return $this->render('index');
+        return $this->redirect(['site/login']);
     }
 
     /**
