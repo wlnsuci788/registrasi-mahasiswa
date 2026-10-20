@@ -2,6 +2,7 @@
 
 use app\assets\AppAsset;
 use app\models\User;
+use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -30,7 +31,10 @@ $menus = [
         ['Saran Fakultas', '/fakultas/index'],
     ]],
     User::ROLE_PDK => ['MENU UPT PDK', [
-        ['Seleksi Pendaftar WNI', '/pdk/index'],
+        ['Dashboard', '/pdk/index'],
+        ['Pendidikan Luar Kampus', '/pdk/pendidikan'],
+        ['BIPA & Credit Earning', '/pdk/bipa'],
+        ['Riwayat Seleksi', '/pdk/riwayat'],
     ]],
     User::ROLE_AKADEMIK => ['MENU AKADEMIK', [
         ['Registration Number', '/akademik/index'],
@@ -54,7 +58,7 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
 <body>
 <?php $this->beginBody() ?>
 
-<div class="staff">
+<div class="staff<?= $user->role === User::ROLE_PDK ? ' staff-pdk' : '' ?>">
     <aside class="side">
         <div class="side-brand">
             <?= Html::img(Url::to('@web/images/unand-logo.png'), [
@@ -71,8 +75,10 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
         <nav>
             <?php foreach ($items as [$label, $url]): ?>
                 <?php if ($url): ?>
+                    <?php $isActive = ltrim($url, '/') === $route || ($url === '/pdk/pendidikan' && $route === 'pdk/evaluasi'); ?>
                     <a href="<?= Html::encode(Url::to([$url])) ?>"
-                       class="<?= ltrim($url, '/') === $route ? 'on' : '' ?>"><?= Html::encode($label) ?></a>
+                       class="<?= $isActive ? 'on' : '' ?>"
+                       <?= $isActive ? 'aria-current="page"' : '' ?>><?= Html::encode($label) ?></a>
                 <?php else: ?>
                     <a href="#" class="dis" title="Halaman menyusul"><?= Html::encode($label) ?></a>
                 <?php endif; ?>
@@ -105,6 +111,7 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
             </div>
         </header>
         <div class="stf-body">
+            <?= Alert::widget() ?>
             <?= $content ?>
         </div>
     </div>
