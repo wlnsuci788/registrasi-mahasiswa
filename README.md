@@ -188,6 +188,21 @@ Dokumentasi perancangan sistem meliputi:
 4. Sesuaikan konfigurasi database dan aplikasi dengan lingkungan lokal.
 5. Jalankan aplikasi sesuai struktur dan konfigurasi Yii2 yang digunakan.
 
+### Akun Demo Fakultas
+
+Di lingkungan development, siapkan akun dummy Fakultas Kedokteran dengan menjalankan:
+
+```bash
+php yii fakultas-demo
+```
+
+Perintah tersebut hanya membuat atau memperbarui akun demo Fakultas dan tidak menghapus data lain. Akun hanya dapat digunakan setelah data Fakultas Kedokteran tersedia di database:
+
+- **Username:** `fk-demo`
+- **Password:** `password123`
+
+Dashboard dan rekomendasi evaluasi menggunakan data dummy yang disimpan sementara di sesi login, bukan data pendaftaran produksi.
+
 ## 📁 Repository
 
 [GitHub – registrasi-mahasiswa](https://github.com/wlnsuci788/registrasi-mahasiswa)
