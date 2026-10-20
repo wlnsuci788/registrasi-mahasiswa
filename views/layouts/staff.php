@@ -33,7 +33,10 @@ $menus = [
         ['Seleksi Pendaftar WNI', '/pdk/index'],
     ]],
     User::ROLE_AKADEMIK => ['MENU AKADEMIK', [
-        ['Registration Number', '/akademik/index'],
+        ['Dashboard', '/akademik/index'],
+        ['Penerbitan Nomor', '/akademik/penerbitan'],
+        ['Buku Registrasi Induk', '/akademik/buku'],
+        ['Riwayat & Laporan', '/akademik/riwayat'],
     ]],
 ];
 [$menuLabel, $items] = $menus[$user->role] ?? ['MENU', []];
@@ -54,7 +57,7 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
 <body>
 <?php $this->beginBody() ?>
 
-<div class="staff">
+<div class="staff<?= $user->role === User::ROLE_AKADEMIK ? ' staff-akademik' : '' ?>">
     <aside class="side">
         <div class="side-brand">
             <?= Html::img(Url::to('@web/images/unand-logo.png'), [
@@ -62,8 +65,8 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
                 'class' => 'staff-logo',
             ]) ?>
             <div>
-                <b>UNAND PORTAL</b>
-                <small>STAF &amp; VERIFIKATOR</small>
+                <b><?= $user->role === User::ROLE_AKADEMIK ? 'UNAND AKADEMIK' : 'UNAND PORTAL' ?></b>
+                <small><?= $user->role === User::ROLE_AKADEMIK ? 'BIRO PENDIDIKAN &amp; AKADEMIK' : 'STAF &amp; VERIFIKATOR' ?></small>
             </div>
         </div>
 
@@ -71,8 +74,10 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
         <nav>
             <?php foreach ($items as [$label, $url]): ?>
                 <?php if ($url): ?>
+                    <?php $isActive = ltrim($url, '/') === $route || ($url === '/akademik/penerbitan' && in_array($route, ['akademik/terbitkan'], true)); ?>
                     <a href="<?= Html::encode(Url::to([$url])) ?>"
-                       class="<?= ltrim($url, '/') === $route ? 'on' : '' ?>"><?= Html::encode($label) ?></a>
+                       class="<?= $isActive ? 'on' : '' ?>"
+                       <?= $isActive ? 'aria-current="page"' : '' ?>><?= Html::encode($label) ?></a>
                 <?php else: ?>
                     <a href="#" class="dis" title="Halaman menyusul"><?= Html::encode($label) ?></a>
                 <?php endif; ?>
@@ -95,7 +100,9 @@ if ($user->role === User::ROLE_FAKULTAS && $user->fakultas) {
 
     <div class="stf-main">
         <header class="stf-top">
-            <span class="ta">&#9679; TAHUN AKADEMIK 2026/2027</span>
+            <?php if ($user->role !== User::ROLE_AKADEMIK): ?>
+                <span class="ta">&#9679; TAHUN AKADEMIK 2026/2027</span>
+            <?php endif; ?>
             <div class="me">
                 <div>
                     <b><?= Html::encode($user->nama) ?></b>
