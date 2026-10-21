@@ -82,6 +82,8 @@ JS);
 
     <div class="dummy">
         Akun demo Biro Akademik: <code>akademik</code> &middot; Kata sandi: <code>password123</code>
+        <br>
+        Akun demo UPT PDK: <code>pdk</code> &middot; Kata sandi: <code>password123</code>
         <small>Akun demo tersedia setelah data dummy dimuat ke database.</small>
     </div>
 

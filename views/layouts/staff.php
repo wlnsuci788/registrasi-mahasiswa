@@ -3,6 +3,7 @@
 
 use app\assets\AppAsset;
 use app\models\User;
+use app\widgets\Alert;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -49,7 +50,10 @@ $menus = [
     ]],
 
     User::ROLE_PDK => ['MENU UPT PDK', [
-        ['Seleksi Pendaftar WNI', '/pdk/index', ['pdk/index']],
+        ['Dashboard', '/pdk/index', ['pdk/index']],
+        ['Pendidikan Luar Kampus', '/pdk/pendidikan', ['pdk/pendidikan', 'pdk/evaluasi']],
+        ['BIPA & Credit Earning', '/pdk/bipa', ['pdk/bipa']],
+        ['Riwayat Seleksi', '/pdk/riwayat', ['pdk/riwayat']],
     ]],
 
     User::ROLE_AKADEMIK => ['MENU AKADEMIK', [
@@ -91,7 +95,7 @@ if ($facultyLayout && $route === 'fakultas/evaluasi') {
 <body>
 <?php $this->beginBody() ?>
 
-<div class="staff<?= $academicLayout ? ' staff-akademik' : '' ?><?= $facultyLayout ? ' staff-faculty' : '' ?>">
+<div class="staff<?= $academicLayout ? ' staff-akademik' : '' ?><?= $facultyLayout ? ' staff-faculty' : '' ?><?= $user->role === User::ROLE_PDK ? ' staff-pdk' : '' ?>">
     <aside class="side">
         <div class="side-brand">
             <?= Html::img(Url::to('@web/images/unand-logo.png'), [
@@ -243,6 +247,7 @@ if ($facultyLayout && $route === 'fakultas/evaluasi') {
         </header>
 
         <div class="stf-body">
+            <?= Alert::widget() ?>
             <?= $content ?>
         </div>
     </div>
