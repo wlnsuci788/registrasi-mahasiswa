@@ -31,9 +31,9 @@ $route = Yii::$app->controller->route;
 $menus = [
     User::ROLE_IO => ['MENU PETUGAS IO', [
         ['Ringkasan', '/io/index', ['io/index']],
-        ['Verifikasi Pendaftaran', null, []],
-        ['Bantuan Visa', null, []],
-        ['Kelola Dokumen Persyaratan', null, []],
+        ['Verifikasi Pendaftaran', '/io/verifikasi', ['io/verifikasi', 'io/detail-verifikasi']],
+        ['Bantuan Visa', '/io/bantuan-visa', ['io/bantuan-visa']],
+        ['Kelola Dokumen Persyaratan', '/io/dokumen-persyaratan', ['io/dokumen-persyaratan']],
     ]],
 
     User::ROLE_FAKULTAS => ['FAKULTAS', [
