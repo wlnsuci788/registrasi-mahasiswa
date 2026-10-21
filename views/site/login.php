@@ -80,13 +80,6 @@ JS);
         <a href="#login-form">Masuk sebagai petugas</a>
     </div>
 
-    <div class="dummy">
-        Akun demo Biro Akademik: <code>akademik</code> &middot; Kata sandi: <code>password123</code>
-        <br>
-        Akun demo UPT PDK: <code>pdk</code> &middot; Kata sandi: <code>password123</code>
-        <small>Akun demo tersedia setelah data dummy dimuat ke database.</small>
-    </div>
-
     <div class="auth-links">
         Belum punya akun?
         <a href="<?= Url::to(['site/register']) ?>"><b>Registrasi Sekarang &rarr;</b></a>
